@@ -5,20 +5,29 @@ filetype plugin indent on
 set binary
 set noendofline
 
-autocmd FileType python inoremap . .<C-X><C-O><C-P>
+autocmd FileType python,javascript inoremap . .<C-X><C-O><C-P>
+
+"no preview window
+:set completeopt-=preview
 
 set encoding=utf-8
 set fileencodings=utf-8,gbk,gb2312,gb18030,ucs-bom,cp936,latin1
 set termencoding=utf-8
 set hlsearch "hilight search
+set list
+set listchars=tab:\|\ ,
 "Colors
-colorscheme murphy
+set background=dark
+colorscheme solarized
+"colorscheme murphy
+
 "no vi mode
 set nocompatible
 "show row number
 set nu
 "set the width of tab
-set tabstop=4
+set ts=4
+set noexpandtab
 "set fonts
 set guifont=Monaco:h12
 "set indent
@@ -81,6 +90,15 @@ nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR>
 :inoremap [ []<Esc>i
 :inoremap " ""<Esc>i
 :inoremap ' ''<Esc>i
+
+inoremap <expr> <Tab> MyTab()
+fun MyTab()
+        let str=strpart(getline("."), 0, col(".")-1)
+        if str!="" && str=~'\m\w$'
+                return "\<C-N>"
+        endif
+        return "\t"
+endfun
 
 function! Open_NERDTree()
 	""	exe "normal 1G"
